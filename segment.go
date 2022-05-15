@@ -399,6 +399,7 @@ func (seg *segment) delEntryPtr(slotId uint8, slot []entryPtr, idx int) {
 	atomic.AddInt64(&seg.entryCount, -1)
 }
 
+// 在一个 slot 数组中，二分查找第一个 hash值为 hash16 的下标，左闭右开区间
 func entryPtrIdx(slot []entryPtr, hash16 uint16) (idx int) {
 	high := len(slot)
 	for idx < high {
@@ -420,6 +421,7 @@ func (seg *segment) lookup(slot []entryPtr, hash16 uint16, key []byte) (idx int,
 		if ptr.hash16 != hash16 {
 			break
 		}
+		// 当遇到 hash 碰撞时，逐个对 key 进行相等判断
 		match = int(ptr.keyLen) == len(key) && seg.rb.EqualAt(key, ptr.offset+ENTRY_HDR_SIZE)
 		if match {
 			return
