@@ -1,4 +1,4 @@
-### thinking in reading source code
+### Thinking in reading source code
 
 #### freecache 的特点
 
